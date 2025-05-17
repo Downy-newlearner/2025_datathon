@@ -16,27 +16,55 @@ class ExperimentRunner:
         self.template = TEMPLATES[config.template_name]
         self.api_url = config.api_url
         self.model = config.model
+        
+        # API 설정
+        self.config_your_model = {
+            "model": self.model,
+            "max_tokens": 0.0,
+            "temperature": self.config.temperature,
+            "top_p": 0.0
+        }
     
-    def _make_prompt(self, text: str) -> str:
+    def _make_prompt(self, text: str) -> List[Dict]:
         """프롬프트 생성"""
-        return self.template.format(text=text)
+        # 템플릿의 깊은 복사
+        messages = []
+        for msg in self.template:
+            messages.append({
+                "role": msg["role"],
+                "content": msg["content"].format(text=text) if "{text}" in msg["content"] else msg["content"]
+            })
+        return messages
     
-    def _call_api_single(self, prompt: str) -> str:
+    def _call_api_single(self, messages: List[Dict]) -> str:
         """단일 문장에 대한 API 호출"""
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
+        
         data = {
             "model": self.model,
-            "messages": [
-                {"role": "user", "content": prompt}
-            ]
+            "messages": messages,
+            "temperature": self.config.temperature,
+            "max_tokens": 1000  # 충분한 길이 확보
         }
-        response = requests.post(self.api_url, headers=headers, json=data)
-        response.raise_for_status()
-        results = response.json()
-        return results["choices"][0]["message"]["content"]
+        
+        try:
+            response = requests.post(self.api_url, headers=headers, json=data)
+            response.raise_for_status()
+            results = response.json()
+            
+            # 응답 내용 확인 및 로깅
+            content = results["choices"][0]["message"]["content"]
+            print(f"\n입력: {messages[-1]['content']}")
+            print(f"출력: {content}")
+            
+            return content.strip()
+            
+        except Exception as e:
+            print(f"API 호출 중 오류 발생: {str(e)}")
+            return messages[-1]['content']  # 오류 시 원본 문장 반환
 
     def run(self, data: pd.DataFrame) -> pd.DataFrame:
         """데이터셋에 대한 실험 실행"""
