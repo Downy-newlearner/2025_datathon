@@ -54,6 +54,22 @@ TEMPLATES = {
         },
         {
             "role": "user",
+            "content": "하루종일 학교앞에서 기다려봤지만, 결국 만나지못했을 때의 기분은 말로 표현하기 어려웠다."
+        },
+        {
+            "role": "assistant",
+            "content": "하루 종일 학교 앞에서 기다려 봤지만, 결국 만나지 못했을 때의 기분은 말로 표현하기 어려웠다."
+        },
+        {
+            "role": "user",
+            "content": "시간의 흐름에 따른 전개로 보지않는건가요?"
+        },
+        {
+            "role": "assistant",
+            "content": "시간의 흐름에 띠른 전개로 보지 않는 건가요?"
+        },
+        {
+            "role": "user",
             "content": "{text}"
         }
     ],

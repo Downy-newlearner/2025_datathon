@@ -19,7 +19,7 @@ def main(num):
 
     # API 키 로드
     load_dotenv()
-    api_key = os.getenv(UPSTAGE_API_KEYS[num])
+    api_key = os.getenv(UPSTAGE_API_KEYS[num % 3])
     if not api_key:
         raise ValueError("API key not found in environment variables")
     
