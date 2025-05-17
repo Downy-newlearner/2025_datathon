@@ -55,7 +55,7 @@ def main():
     # 최고 성능 템플릿 찾기
     best_template = max(
         results.items(), 
-        key=lambda x: x[1]['valid_recall']['recall']
+        key=lambda x: x[1]['valid_recall']['recall'] # x는 results.items()의 각 요소를 나타낸다.
     )[0]
     
     print(f"\n최고 성능 템플릿: {best_template}")
