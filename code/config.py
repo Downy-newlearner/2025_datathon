@@ -6,7 +6,7 @@ import os
 class ExperimentConfig:
     # 템플릿 설정
     template_name: str
-    temperature: float = 0.0
+    temperature: float = 1.0
     batch_size: int = 5
     experiment_name: Optional[str] = None
     
