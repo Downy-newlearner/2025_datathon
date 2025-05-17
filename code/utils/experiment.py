@@ -100,7 +100,7 @@ class ExperimentRunner:
         주어진 텍스트와 train.csv에서 샘플링한 문장들 간의 유사도를 계산하여,
         유사도가 높은 상위 m개의 문장을 프롬프트 템플릿의 예시 형태로 반환합니다.
         """
-        m = 20
+        m = 15
         n = 1000 # train.csv 에서 샘플링할 데이터 수
 
         # train.csv 파일 경로 지정
@@ -113,6 +113,7 @@ class ExperimentRunner:
         # 샘플링한 데이터 중 문장 추출
         sentences = train_data['cor_sentence'].tolist()
 
+        print(f"유사도 측정을 시작합니다. text: {text}")
         # sentences를 비교 text와 비교하여 유사도 측정
         similarities = []
         for sentence in sentences:
